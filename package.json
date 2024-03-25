@@ -14,10 +14,10 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "benchmark": "npm run build && node --expose-gc --max-old-space-size=4096 benchmark.js",
-    "build": "npm run clean && tsc",
+    "benchmark": "bun run build && bun benchmark.js",
+    "build": "bun run clean && tsc",
     "clean": "rm -rf dist/",
-    "prepublishOnly": "npm run clean && npm run build",
+    "prepublishOnly": "bun run clean && bun run build",
     "test": "jest"
   },
   "devDependencies": {

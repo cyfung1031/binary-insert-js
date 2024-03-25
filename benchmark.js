@@ -2,7 +2,7 @@ const {binaryInsert} = require("./dist/index");
 
 const {performance} = require('perf_hooks');
 
-const numberOfRuns = 1;
+const numberOfRuns = 50;
 
 const singleValueBenchmark = {binary: {}, insertThenSort: {}};
 
@@ -55,7 +55,7 @@ for (let a = 0; a < numberOfRuns; a++) {
     updateBenchmarkAverage(singleValueBenchmark.insertThenSort, arraySize, stopSortAfterInsertions - startSortAfterInsertions);
 
   }
-  global.gc();
+  typeof global !== "undefined" && typeof global.gc === "function" ? global.gc() : 0;
 }
 
 /*
@@ -112,7 +112,7 @@ for (let a = 0; a < numberOfRuns; a++) {
       updateBenchmarkAverage(multiInsertBenchmark.insertThenSort[randInsertValues.length], arraySize, stopSortAfterInsertions - startSortAfterInsertions);
     }
   }
-  global.gc();
+  typeof global !== "undefined" && typeof global.gc === "function" ? global.gc() : 0;
 }
 
 console.log(`Averaged over ${numberOfRuns} runs.`)

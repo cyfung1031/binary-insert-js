@@ -13,37 +13,38 @@ function binaryInsert(array, insertValue, comparator) {
     * These two conditional statements are not required, but will avoid the
     * while loop below, potentially speeding up the insert by a decent amount.
     * */
-    if (array.length === 0 || comparator(array[0], insertValue) >= 0) {
-        array.splice(0, 0, insertValue);
+    var left = 0;
+    var right = array.length;
+    var z;
+    // Directly return if array is empty or the insertValue should be at the end
+    if (right === 0 || (z = comparator(array[right - 1], insertValue)) <= 0) {
+        array.push(insertValue);
         return array;
     }
-    else if (array.length > 0 && comparator(array[array.length - 1], insertValue) <= 0) {
-        array.splice(array.length, 0, insertValue);
+    // Check if the insertValue should be at the beginning
+    if ((right === 1 ? z : comparator(array[0], insertValue)) >= 0) {
+        array.unshift(insertValue);
         return array;
     }
-    var left = 0, right = array.length;
-    var leftLast = 0, rightLast = right;
+    ++left;
+    --right;
+    // Main binary search loop to find the insertion position
     while (left < right) {
-        var inPos = Math.floor((right + left) / 2);
-        var compared = comparator(array[inPos], insertValue);
+        var mid = Math.floor((right + left) / 2);
+        var compared = comparator(array[mid], insertValue);
         if (compared < 0) {
-            left = inPos;
+            left = mid + 1;
         }
         else if (compared > 0) {
-            right = inPos;
+            right = mid;
         }
         else {
-            right = inPos;
-            left = inPos;
-        }
-        // nothing has changed, must have found limits. insert between.
-        if (leftLast === left && rightLast === right) {
+            // If equal, insert at the mid position
+            left = right = mid;
             break;
         }
-        leftLast = left;
-        rightLast = right;
     }
-    // use right, because Math.floor is used
+    // Insertion is always at the right position due to the nature of the binary search
     array.splice(right, 0, insertValue);
     return array;
 }
